@@ -1,7 +1,10 @@
-import { plainToInstance } from 'class-transformer';
-import { LoggerService } from '../logger';
-import { ConnectionParams } from './connection-params.interface';
-import { Driver } from './driver.interface';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { LoggerService } from '../../logger';
+import { Driver } from './interfaces';
+
+export interface ConnectionParams<T> {
+  mapper?: ClassConstructor<T>;
+}
 
 export class Connection {
   constructor(
@@ -18,8 +21,8 @@ export class Connection {
     this.loggerService.debug(query);
 
     const data = await this.driver.query<T>(query);
-    if (params?.type) {
-      return plainToInstance(params.type, data);
+    if (params?.mapper) {
+      return plainToInstance(params.mapper, data);
     }
 
     return data;

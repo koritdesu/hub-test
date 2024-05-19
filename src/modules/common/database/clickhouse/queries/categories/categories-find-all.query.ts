@@ -1,4 +1,4 @@
-import { CategoriesFindAllParams } from '../../types/categories.type';
+import { CategoriesFindAllParams } from '../../interfaces/categories.type';
 
 export function categoriesFindAllQuery(params: CategoriesFindAllParams) {
   const segments = Math.min(

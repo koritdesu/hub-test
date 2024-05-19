@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createDatabaseModule } from '../create-database-module.helper';
-import { createClickhouseDriver } from './create-clickhouse-driver.helper';
+import { createDatabaseModule } from '../common';
+import { createClickhouseDriver } from './helpers';
 
 @Module({})
 export class ClickhouseMidModule extends createDatabaseModule(

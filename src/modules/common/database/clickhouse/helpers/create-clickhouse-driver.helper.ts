@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { createUrl } from '../../url';
-import { DriverException } from '../driver.exception';
-import { Driver } from '../driver.interface';
+import { createUrl } from '../../../url';
+import { Driver, DriverException } from '../../common';
 
 interface CreateClickhouseDriverParams {
   host: string;
