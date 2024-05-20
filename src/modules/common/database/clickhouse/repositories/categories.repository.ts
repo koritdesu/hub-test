@@ -16,6 +16,7 @@ export class CategoriesRepository implements ICategoriesRepository {
     return this.connection.query<CategoriesFindAllResult[]>(
       categoriesFindAllQuery(params),
       {
+        name: `${this.constructor.name}.${this.findAll.name}`,
         mapper: CategoriesFindAllMapper,
       },
     );
