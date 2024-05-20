@@ -1,6 +1,9 @@
-import { CategoriesFindAllParams } from '../../interfaces/categories.type';
+import { QueryDefinition } from '../../../common';
+import { CategoriesFindAllParams } from '../../interfaces';
 
-export function categoriesFindAllQuery(params: CategoriesFindAllParams) {
+export const categoriesFindAllQuery: QueryDefinition<
+  CategoriesFindAllParams
+> = (params) => {
   const segments = Math.min(
     params.segments,
     Math.max(1, params.priceEnd - params.priceStart),
@@ -27,4 +30,4 @@ SELECT
   , 0 AS avgRevenueSumPerItem
 FROM numbers(${segments}) n
 FORMAT JSON;`;
-}
+};

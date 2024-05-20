@@ -1,12 +1,12 @@
-import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { LoggerService } from '../../logger';
 import { TrackingService } from '../../tracking/tracking.service';
-import { Driver } from './interfaces';
-
-export interface ConnectionParams<T> {
-  name?: string;
-  mapper?: ClassConstructor<T>;
-}
+import {
+  ConnectionParams,
+  Driver,
+  QueryDefinition,
+  QueryRunner,
+} from './interfaces';
 
 export class Connection {
   constructor(
@@ -15,26 +15,25 @@ export class Connection {
     private readonly trackingService: TrackingService,
   ) {}
 
-  query<T>(query: string, params?: ConnectionParams<T>): Promise<T>;
-  query<T = unknown>(
-    query: string,
-    params?: ConnectionParams<unknown>,
-  ): Promise<T>;
-  async query<T>(query: string, params?: ConnectionParams<T>): Promise<T> {
-    const name = params?.name ?? this.query.name;
+  query<P>(fn: QueryDefinition<P>): QueryRunner<P> {
+    return {
+      run: async <T>(params: ConnectionParams<P, T>) => {
+        const label = this.trackingService.label(fn);
+        const query = fn(params.params);
 
-    this.loggerService.debug(
-      `\n--${this.trackingService.requestId}\n`.concat(query),
-    );
+        this.loggerService.debug(`${label}\n`.concat(query));
 
-    const timeTracker = this.trackingService.timeTracker(name);
-    const data = await this.driver.query<T>(query);
-    timeTracker.end();
+        const time = this.trackingService.time(label);
+        const data = await this.driver
+          .query<T>(query)
+          .finally(() => time.end());
 
-    if (params?.mapper) {
-      return plainToInstance(params.mapper, data);
-    }
+        if (params?.mapper) {
+          return plainToInstance(params.mapper, data);
+        }
 
-    return data;
+        return data;
+      },
+    };
   }
 }
