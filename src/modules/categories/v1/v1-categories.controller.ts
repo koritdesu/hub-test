@@ -1,13 +1,13 @@
 import { Controller, Get, Query, SerializeOptions } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
 import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,
 } from './dto';
+import { V1CategoriesService } from './v1-categories.service';
 
 @Controller('v1/categories')
-export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+export class V1CategoriesController {
+  constructor(private readonly categoriesService: V1CategoriesService) {}
 
   @Get()
   @SerializeOptions({

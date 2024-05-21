@@ -1,2 +1,2 @@
-export * from './categories.controller';
-export * from './categories.service';
+export * from './v1-categories.controller';
+export * from './v1-categories.service';

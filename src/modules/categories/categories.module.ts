@@ -4,7 +4,7 @@ import {
   ClickhouseFastModule,
   ICategoriesRepository,
 } from '../common/database';
-import * as v1 from './v1';
+import { V1CategoriesController, V1CategoriesService } from './v1';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import * as v1 from './v1';
       },
     ]),
   ],
-  controllers: [v1.CategoriesController],
-  providers: [v1.CategoriesService],
+  controllers: [V1CategoriesController],
+  providers: [V1CategoriesService],
 })
 export class CategoriesModule {}

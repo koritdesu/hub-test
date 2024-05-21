@@ -6,7 +6,7 @@ import {
 } from './dto';
 
 @Injectable()
-export class CategoriesService {
+export class V1CategoriesService {
   constructor(
     @Inject(ICategoriesRepository)
     private readonly categoriesRepository: ICategoriesRepository,
