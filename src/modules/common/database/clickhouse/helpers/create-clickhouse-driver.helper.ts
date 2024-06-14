@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { createUrl } from '../../../url';
+import { createUrl } from '../../../helpers';
 import { Driver, DriverException } from '../../common';
 
 interface CreateClickhouseDriverParams {
