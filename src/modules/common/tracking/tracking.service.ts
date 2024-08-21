@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
 import { Injectable } from '@nestjs/common';
 import { AlsService } from '../als';
 import { LoggerService } from '../logger';
@@ -38,7 +40,10 @@ export class TrackingService {
     };
   }
 
-  label<T extends (...args: any[]) => any>(fn: T): string {
-    return `${fn.name}-${this.requestId}`;
+  label(...handlers: Function[]): string {
+    return handlers
+      .map(({ name }) => name)
+      .join(':')
+      .concat('-', this.requestId);
   }
 }

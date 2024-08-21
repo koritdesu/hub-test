@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import { LoggerService } from '../../logger';
-import { TrackingService } from '../../tracking/tracking.service';
+import { TrackingService } from '../../tracking';
 import {
   ConnectionParams,
   Driver,

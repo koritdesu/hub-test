@@ -1,7 +1,6 @@
 import { DynamicModule, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TrackingModule } from 'src/modules/common/tracking/tracking.module';
-import { TrackingService } from 'src/modules/common/tracking/tracking.service';
+import { TrackingModule, TrackingService } from 'src/modules/common/tracking';
 import { LoggerModule, LoggerService } from '../../../logger';
 import { Connection } from '../connection';
 import { Driver } from '../interfaces/driver.interface';
