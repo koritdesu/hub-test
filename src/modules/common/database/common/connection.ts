@@ -23,7 +23,7 @@ export class Connection {
 
         this.loggerService.debug(`${label}\n`.concat(query));
 
-        const time = this.trackingService.time(label);
+        const time = this.trackingService.time(label, this.constructor.name);
         const data = await this.driver
           .query<T>(query)
           .finally(() => time.end());

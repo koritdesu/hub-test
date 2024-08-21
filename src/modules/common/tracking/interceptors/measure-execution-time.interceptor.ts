@@ -13,7 +13,8 @@ export class MeasureExecutionTimeInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const time = this.trackingService.time(
-      this.trackingService.label(context.getClass(), context.getHandler()),
+      this.trackingService.label(context.getHandler()),
+      context.getClass().name,
     );
 
     return next.handle().pipe(tap(() => time.end()));

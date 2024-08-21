@@ -6,7 +6,7 @@ import { LoggerModule } from '../logger';
 import { TrackingService } from './tracking.service';
 
 @Module({
-  imports: [AlsModule, LoggerModule.forFeature(TrackingModule)],
+  imports: [AlsModule, LoggerModule.forFeature(TrackingModule, '')],
   providers: [TrackingService],
   exports: [TrackingService],
 })
