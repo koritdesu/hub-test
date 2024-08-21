@@ -1,3 +1,3 @@
-export interface QueryDefinition<T = any> {
+export interface QueryDefinition<T = unknown> {
   (params: T): string;
 }

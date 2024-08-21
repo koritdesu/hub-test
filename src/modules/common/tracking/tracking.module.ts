@@ -13,7 +13,7 @@ import { TrackingService } from './tracking.service';
 export class TrackingModule implements NestModule {
   constructor(private readonly alsService: AlsService) {}
 
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply((req: Request, _res: Response, next: NextFunction) => {
         const requestId = req.headers['x-request-id'] ?? randomUUID();

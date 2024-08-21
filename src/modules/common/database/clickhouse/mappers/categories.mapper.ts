@@ -1,9 +1,9 @@
 import { Exclude, Expose } from 'class-transformer';
 import { TransformToPositiveIntOrNull } from 'src/modules/common/serialization';
-import { CategoriesFindAllResult } from '../interfaces';
+import { CategoriesFindAllEntity } from '../entities';
 
 @Exclude()
-export class CategoriesFindAllMapper implements CategoriesFindAllResult {
+export class CategoriesFindAllMapper implements CategoriesFindAllEntity {
   @Expose()
   @TransformToPositiveIntOrNull()
   articlesCount: number;

@@ -1,9 +1,10 @@
 import {
+  CategoriesFindAllEntity,
   CategoriesFindAllParams,
-  CategoriesFindAllResult,
-} from '../../interfaces';
+} from '../../entities';
 
-export const ICategoriesRepository = Symbol('ICategoriesRepository');
+export const ICategoriesRepository = Symbol('CategoriesRepository');
+
 export interface ICategoriesRepository {
-  findAll(params: CategoriesFindAllParams): Promise<CategoriesFindAllResult[]>;
+  findAll(params: CategoriesFindAllParams): Promise<CategoriesFindAllEntity[]>;
 }

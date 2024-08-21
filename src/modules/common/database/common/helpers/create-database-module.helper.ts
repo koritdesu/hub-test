@@ -9,7 +9,7 @@ import { Driver } from '../interfaces/driver.interface';
 export function createDatabaseModule(
   driverFactory: (configService: ConfigService) => Driver,
 ) {
-  return class {
+  return class DatabaseModule {
     static forFeature(repositories: Provider[]): DynamicModule {
       return {
         module: this,

@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from '../../common';
-import {
-  CategoriesFindAllParams,
-  CategoriesFindAllResult,
-} from '../interfaces';
+import { CategoriesFindAllEntity, CategoriesFindAllParams } from '../entities';
 import { CategoriesFindAllMapper } from '../mappers';
 import { categoriesFindAllQuery } from '../queries';
 import { ICategoriesRepository } from './interfaces';
@@ -12,10 +9,10 @@ import { ICategoriesRepository } from './interfaces';
 export class CategoriesRepository implements ICategoriesRepository {
   constructor(protected readonly connection: Connection) {}
 
-  findAll(params: CategoriesFindAllParams): Promise<CategoriesFindAllResult[]> {
+  findAll(params: CategoriesFindAllParams): Promise<CategoriesFindAllEntity[]> {
     return this.connection
       .query(categoriesFindAllQuery)
-      .run<CategoriesFindAllResult[]>({
+      .run<CategoriesFindAllEntity[]>({
         params,
         mapper: CategoriesFindAllMapper,
       });

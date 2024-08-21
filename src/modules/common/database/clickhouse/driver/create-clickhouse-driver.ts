@@ -1,13 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import { createUrl } from '../../../helpers';
+import { createUrl } from '../../../url';
 import { Driver, DriverException } from '../../common';
-
-interface CreateClickhouseDriverParams {
-  host: string;
-  port: number;
-  username: string;
-  password: string;
-}
+import { CreateClickhouseDriverParams } from './interfaces';
 
 export function createClickhouseDriver(
   params: CreateClickhouseDriverParams,
@@ -45,7 +39,7 @@ export function createClickhouseDriver(
           return json.data;
         }
 
-        throw new DriverException('Only json');
+        throw new DriverException('json');
       }
 
       const text = await response.text();
@@ -53,7 +47,7 @@ export function createClickhouseDriver(
         throw new DriverException(text);
       }
 
-      throw new DriverException('Unknown');
+      throw new DriverException('unknown');
     },
   };
 }

@@ -38,7 +38,7 @@ export class TrackingService {
     };
   }
 
-  label<T extends (...args: any[]) => any>(fn: T) {
+  label<T extends (...args: any[]) => any>(fn: T): string {
     return `${fn.name}-${this.requestId}`;
   }
 }

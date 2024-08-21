@@ -1,5 +1,5 @@
 import { QueryDefinition } from '../../../common';
-import { CategoriesFindAllParams } from '../../interfaces';
+import { CategoriesFindAllParams } from '../../entities';
 
 export const categoriesFindAllQuery: QueryDefinition<
   CategoriesFindAllParams

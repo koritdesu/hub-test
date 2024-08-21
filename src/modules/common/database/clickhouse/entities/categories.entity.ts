@@ -7,7 +7,7 @@ export interface CategoriesFindAllParams {
   priceEnd: number;
 }
 
-export interface CategoriesFindAllResult {
+export interface CategoriesFindAllEntity {
   articlesCount: number;
   articlesWithRevenueCount: number;
   articlesWithRevenuePct: number;
