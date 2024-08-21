@@ -8,7 +8,7 @@ export function createClickhouseDriver(
 ): Driver {
   const isDbException = (text: string) => text.includes('DB::Exception');
   const isJsonResponse = (response: Response) =>
-    response.headers.get('content-type').startsWith('application/json');
+    response.headers.get('content-type')?.startsWith('application/json');
 
   return {
     async query<T = unknown>(query: string): Promise<T> {

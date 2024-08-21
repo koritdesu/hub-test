@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
 import { Injectable } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
 import { AlsService } from '../als';
 import { LoggerService } from '../logger';
 import { Tracker } from './interfaces';
@@ -13,7 +14,7 @@ export class TrackingService {
   ) {}
 
   get requestId(): string {
-    return this.alsService.getStore().requestId;
+    return this.alsService.getStore()?.requestId ?? randomUUID();
   }
 
   async measureExecutionTime<
@@ -28,13 +29,14 @@ export class TrackingService {
     }
   }
 
-  time(label: string): Tracker {
+  time(label: string, context = this.constructor.name): Tracker {
     const start = process.hrtime.bigint();
     return {
       end: () => {
         const end = process.hrtime.bigint() - start;
         this.loggerService.debug(
           `${label} executed in ${Number(end / 1000000n)}ms`,
+          context,
         );
       },
     };
