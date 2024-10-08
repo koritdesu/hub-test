@@ -1,4 +1,11 @@
-import { Controller, Get, Query, SerializeOptions } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  SerializeOptions,
+  UseInterceptors,
+} from '@nestjs/common';
+import { RedisCacheInterceptor } from 'src/modules/common/cache/redis';
 import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,
@@ -10,6 +17,7 @@ export class V1CategoriesController {
   constructor(private readonly categoriesService: V1CategoriesService) {}
 
   @Get()
+  @UseInterceptors(RedisCacheInterceptor)
   @SerializeOptions({
     type: CategoriesFindAllResponseDto,
   })

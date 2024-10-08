@@ -1,12 +1,11 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { NextFunction, Request, Response } from 'express';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { randomUUID } from 'node:crypto';
-import { AlsModule, AlsService } from '../als';
-import { LoggerModule } from '../logger';
+import { AlsModule, AlsService, Store } from '../als';
 import { TrackingService } from './tracking.service';
 
 @Module({
-  imports: [AlsModule, LoggerModule.forFeature(TrackingModule, '')],
+  imports: [AlsModule],
   providers: [TrackingService],
   exports: [TrackingService],
 })
@@ -15,19 +14,25 @@ export class TrackingModule implements NestModule {
 
   configure(consumer: MiddlewareConsumer): void {
     consumer
-      .apply((req: Request, _res: Response, next: NextFunction) => {
-        const requestId = req.headers['x-request-id'] ?? randomUUID();
-        if (typeof requestId === 'string') {
-          this.alsService.run(
-            {
+      .apply(
+        (
+          req: FastifyRequest['raw'],
+          reply: FastifyReply['raw'],
+          next: () => void,
+        ) => {
+          const requestId = req.headers['x-request-id'] ?? randomUUID();
+
+          if (typeof requestId === 'string') {
+            const store: Store = {
               requestId,
-            },
-            () => next(),
-          );
-        } else {
-          next();
-        }
-      })
+            };
+
+            return this.alsService.run(store, next);
+          }
+
+          return next();
+        },
+      )
       .forRoutes('*');
   }
 }

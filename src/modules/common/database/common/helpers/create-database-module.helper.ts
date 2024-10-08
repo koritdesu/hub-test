@@ -1,7 +1,6 @@
 import { DynamicModule, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TrackingModule, TrackingService } from 'src/modules/common/tracking';
-import { LoggerModule, LoggerService } from '../../../logger';
 import { Connection } from '../connection';
 import { Driver } from '../interfaces/driver.interface';
 
@@ -12,21 +11,15 @@ export function createDatabaseModule(
     static forFeature(repositories: Provider[]): DynamicModule {
       return {
         module: this,
-        imports: [LoggerModule.forFeature(this), TrackingModule],
+        imports: [TrackingModule],
         providers: [
           {
             provide: Connection,
             useFactory: (
               configService: ConfigService,
-              loggerService: LoggerService,
               trackingService: TrackingService,
-            ) =>
-              new Connection(
-                driverFactory(configService),
-                loggerService,
-                trackingService,
-              ),
-            inject: [ConfigService, LoggerService, TrackingService],
+            ) => new Connection(driverFactory(configService), trackingService),
+            inject: [ConfigService, TrackingService],
           },
           ...repositories,
         ],

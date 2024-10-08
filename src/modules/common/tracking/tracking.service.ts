@@ -1,40 +1,28 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { AlsService } from '../als';
-import { LoggerService } from '../logger';
 import { Tracker } from './interfaces';
 
 @Injectable()
 export class TrackingService {
-  constructor(
-    private readonly alsService: AlsService,
-    private readonly loggerService: LoggerService,
-  ) {}
+  private readonly logger = new Logger();
+
+  constructor(private readonly alsService: AlsService) {}
 
   get requestId(): string {
     return this.alsService.getStore()?.requestId ?? randomUUID();
   }
 
-  async measureExecutionTime<
-    T extends (...parameters: any[]) => any,
-    R = ReturnType<T>,
-  >(fn: T, ...parameters: Parameters<T>): Promise<R> {
-    const tracker = this.time(fn.name);
-    try {
-      return await fn(parameters);
-    } finally {
-      tracker.end();
-    }
-  }
-
   time(label: string, context = this.constructor.name): Tracker {
     const start = process.hrtime.bigint();
+
     return {
       end: () => {
         const end = process.hrtime.bigint() - start;
-        this.loggerService.debug(
+
+        this.logger.debug(
           `${label} executed in ${Number(end / 1000000n)}ms`,
           context,
         );

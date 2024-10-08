@@ -1,5 +1,5 @@
+import { Logger } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { LoggerService } from '../../logger';
 import { TrackingService } from '../../tracking';
 import {
   ConnectionParams,
@@ -9,9 +9,10 @@ import {
 } from './interfaces';
 
 export class Connection {
+  private readonly logger = new Logger(this.constructor.name);
+
   constructor(
     readonly driver: Driver,
-    private readonly loggerService: LoggerService,
     private readonly trackingService: TrackingService,
   ) {}
 
@@ -21,7 +22,7 @@ export class Connection {
         const label = this.trackingService.label(fn);
         const query = fn(params.params);
 
-        this.loggerService.debug(`${label}\n`.concat(query));
+        this.logger.debug(`${label}\n`.concat(query));
 
         const time = this.trackingService.time(label, this.constructor.name);
         const data = await this.driver

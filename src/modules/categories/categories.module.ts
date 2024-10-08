@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { RedisCacheModule } from '../common/cache/redis';
 import {
   CategoriesRepository,
   ClickhouseFastModule,
@@ -14,6 +15,7 @@ import { V1CategoriesController, V1CategoriesService } from './v1';
         useClass: CategoriesRepository,
       },
     ]),
+    RedisCacheModule.forFeature(),
   ],
   controllers: [V1CategoriesController],
   providers: [V1CategoriesService],
