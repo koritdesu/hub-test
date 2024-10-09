@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import Joi from 'joi';
 import { AppConfigService } from './configs';
+import { BrowserExtensionModule } from './modules/browser-extension';
 import { CategoriesModule } from './modules/categories';
 import {
   MeasureExecutionTimeInterceptor,
@@ -18,7 +19,8 @@ import {
       }),
     }),
     TrackingModule,
-    CategoriesModule,
+    BrowserExtensionModule,
+    CategoriesModule.register(),
   ],
   providers: [
     {
