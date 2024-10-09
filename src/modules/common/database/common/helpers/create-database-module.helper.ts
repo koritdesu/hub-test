@@ -8,7 +8,10 @@ export function createDatabaseModule(
   driverFactory: (configService: ConfigService) => Driver,
 ) {
   return class DatabaseModule {
-    static forFeature(repositories: Provider[]): DynamicModule {
+    // TODO: должно быть 2 метода forRoot и forFeature
+    // forRoot задает общее подключение
+    // forFeature определяет репозитории
+    static register(repositories: Provider[]): DynamicModule {
       return {
         module: this,
         imports: [TrackingModule],

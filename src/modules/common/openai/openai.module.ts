@@ -5,7 +5,7 @@ import { OpenAIService } from './openai.service';
 
 @Module({})
 export class OpenAIModule {
-  static forFeature(config: OpenAIConfig): DynamicModule {
+  static register(config: OpenAIConfig): DynamicModule {
     return {
       module: OpenAIModule,
       providers: [

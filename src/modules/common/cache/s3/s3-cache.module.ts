@@ -4,7 +4,7 @@ import { S3CacheService } from './s3-cache.service';
 
 @Module({})
 export class S3CacheModule {
-  static forFeature(): DynamicModule {
+  static register(): DynamicModule {
     return {
       module: this,
       imports: [TrackingModule],

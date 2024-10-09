@@ -4,7 +4,7 @@ import { RedisCacheService } from './redis-cache.service';
 
 @Module({})
 export class RedisCacheModule {
-  static forFeature(): DynamicModule {
+  static register(): DynamicModule {
     return {
       module: this,
       imports: [TrackingModule],
