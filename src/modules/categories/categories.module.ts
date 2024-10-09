@@ -10,6 +10,10 @@ import { V1CategoriesController, V1CategoriesService } from './v1';
 @Module({})
 export class CategoriesModule {
   static register<T extends Type>(module: T = class {} as T): T {
+    Object.defineProperty(module, 'name', {
+      value: this.name,
+    });
+
     Module({
       imports: [
         ClickhouseFastModule.register([
