@@ -12,7 +12,10 @@ import {
 } from './dto';
 import { V1CategoriesService } from './v1-categories.service';
 
-@Controller('v1/categories')
+@Controller({
+  path: ['categories'],
+  version: '1',
+})
 export class V1CategoriesController {
   constructor(private readonly categoriesService: V1CategoriesService) {}
 
