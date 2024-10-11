@@ -1,5 +1,5 @@
 import helmet from '@fastify/helmet';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -9,11 +9,20 @@ import { AppModule } from './app.module';
 import { AppConfigService } from './configs';
 
 async function bootstrap() {
+  const logger = new Logger('Main');
+
   const adapter = new FastifyAdapter();
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     adapter,
+    {
+      bufferLogs: true,
+      forceCloseConnections: true,
+    },
   );
+
+  app.useLogger(logger);
+  app.enableShutdownHooks();
 
   await app.register(helmet, {
     contentSecurityPolicy: false,
@@ -36,6 +45,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(app.get(AppConfigService).port);
+  await app.listen(app.get(AppConfigService).port, '0.0.0.0');
+  logger.log('🚀 Application is running');
 }
 bootstrap();
