@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
-import { CategoriesModule, ICategoriesService } from '../categories';
+import { CategoriesModule } from '../categories';
+import { ICategoriesService } from '../categories/v1';
 import { V1CategoriesService } from './categories';
 
 const children = [
