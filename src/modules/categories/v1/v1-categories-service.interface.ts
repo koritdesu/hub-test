@@ -1,11 +1,11 @@
 import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,
-} from '../dto';
+} from './dto';
 
-export const ICategoriesService = Symbol('CategoriesService');
+export const IV1CategoriesService = Symbol('CategoriesService');
 
-export interface ICategoriesService {
+export interface IV1CategoriesService {
   findAll(
     query: CategoriesFindAllRequestDto,
   ): Promise<CategoriesFindAllResponseDto[]>;

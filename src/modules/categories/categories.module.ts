@@ -6,7 +6,7 @@ import {
 } from '../common/database';
 import { createDynamicModule } from '../common/module';
 import {
-  ICategoriesService,
+  IV1CategoriesService,
   V1CategoriesController,
   V1CategoriesService,
 } from './v1';
@@ -24,7 +24,7 @@ export class CategoriesModule extends createDynamicModule({
   controllers: [V1CategoriesController],
   providers: [
     {
-      provide: ICategoriesService,
+      provide: IV1CategoriesService,
       useClass: V1CategoriesService,
     },
   ],

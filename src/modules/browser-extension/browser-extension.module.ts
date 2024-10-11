@@ -1,18 +1,21 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
-import { CategoriesModule } from '../categories';
-import { ICategoriesService } from '../categories/v1';
+import { BrandsModule } from '../brands';
+import { CategoriesModule, IV1CategoriesService } from '../categories';
+import { CitiesModule } from '../cities';
 import { V1CategoriesService } from './categories';
 
 const children = [
+  BrandsModule.register(),
   CategoriesModule.register({
     providers: [
       {
-        provide: ICategoriesService,
+        provide: IV1CategoriesService,
         useClass: V1CategoriesService,
       },
     ],
   }),
+  CitiesModule.register(),
 ];
 
 @Module({

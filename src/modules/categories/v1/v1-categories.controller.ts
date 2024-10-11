@@ -11,7 +11,7 @@ import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,
 } from './dto';
-import { ICategoriesService } from './interfaces';
+import { IV1CategoriesService } from './v1-categories-service.interface';
 
 @Controller({
   path: ['categories'],
@@ -19,8 +19,8 @@ import { ICategoriesService } from './interfaces';
 })
 export class V1CategoriesController {
   constructor(
-    @Inject(ICategoriesService)
-    private readonly categoriesService: ICategoriesService,
+    @Inject(IV1CategoriesService)
+    private readonly categoriesService: IV1CategoriesService,
   ) {}
 
   @Get()
