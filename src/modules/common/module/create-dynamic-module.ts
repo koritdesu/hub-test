@@ -1,13 +1,15 @@
 import { Module, ModuleMetadata } from '@nestjs/common';
+import { merge } from 'lodash';
+import { randomUUID } from 'node:crypto';
 
-export const createDynamicModule = (metadata: ModuleMetadata) => {
+export const createDynamicModule = (defaultMetadata: ModuleMetadata) => {
   return class {
-    static register() {
+    static register(metadata: ModuleMetadata = {}) {
       const module = Object.defineProperty(class {}, 'name', {
-        value: this.name,
+        value: `${this.name}:${randomUUID()}`,
       });
 
-      Module(metadata)(module);
+      Module(merge({}, defaultMetadata, metadata))(module);
 
       return module;
     }

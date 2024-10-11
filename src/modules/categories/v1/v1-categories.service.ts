@@ -4,9 +4,10 @@ import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,
 } from './dto';
+import { ICategoriesService } from './interfaces';
 
 @Injectable()
-export class V1CategoriesService {
+export class V1CategoriesService implements ICategoriesService {
   constructor(
     @Inject(ICategoriesRepository)
     private readonly categoriesRepository: ICategoriesRepository,

@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Inject,
   Query,
   SerializeOptions,
   UseInterceptors,
@@ -10,14 +11,17 @@ import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,
 } from './dto';
-import { V1CategoriesService } from './v1-categories.service';
+import { ICategoriesService } from './interfaces';
 
 @Controller({
   path: ['categories'],
   version: '1',
 })
 export class V1CategoriesController {
-  constructor(private readonly categoriesService: V1CategoriesService) {}
+  constructor(
+    @Inject(ICategoriesService)
+    private readonly categoriesService: ICategoriesService,
+  ) {}
 
   @Get()
   @UseInterceptors(RedisCacheInterceptor)

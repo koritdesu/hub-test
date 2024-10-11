@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { RedisCacheModule } from '../common/cache/redis';
 import {
   CategoriesRepository,
@@ -6,9 +5,12 @@ import {
   ICategoriesRepository,
 } from '../common/database';
 import { createDynamicModule } from '../common/module';
-import { V1CategoriesController, V1CategoriesService } from './v1';
+import {
+  ICategoriesService,
+  V1CategoriesController,
+  V1CategoriesService,
+} from './v1';
 
-@Module({})
 export class CategoriesModule extends createDynamicModule({
   imports: [
     ClickhouseFastModule.register([
@@ -20,5 +22,10 @@ export class CategoriesModule extends createDynamicModule({
     RedisCacheModule.register(),
   ],
   controllers: [V1CategoriesController],
-  providers: [V1CategoriesService],
+  providers: [
+    {
+      provide: ICategoriesService,
+      useClass: V1CategoriesService,
+    },
+  ],
 }) {}
