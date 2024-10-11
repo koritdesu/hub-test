@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ICategoriesRepository } from 'src/modules/common/database';
+import { ICategoriesRepository } from '../../common/database';
 import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,

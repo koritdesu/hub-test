@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { OpenAIConfig } from 'src/modules/common/openai';
-import { S3Config } from 'src/modules/common/s3';
+import { OpenAIConfig } from '../modules/common/openai';
+import { S3Config } from '../modules/common/s3';
 import { AppConfig } from './types';
 
 @Injectable()

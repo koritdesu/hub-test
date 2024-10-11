@@ -1,6 +1,7 @@
+import { INestApplication, VersioningType } from '@nestjs/common';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
@@ -11,14 +12,21 @@ describe('AppController (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    app = moduleFixture.createNestApplication(new FastifyAdapter());
+
+    app.setGlobalPrefix('api');
+    app.enableVersioning({
+      type: VersioningType.URI,
+    });
+
+    await app.listen(3000);
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+    return request(app.getHttpServer()).get('/').expect(404);
   });
 });

@@ -6,7 +6,7 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { RedisCacheInterceptor } from 'src/modules/common/cache/redis';
+import { RedisCacheInterceptor } from '../../common/cache/redis';
 import {
   CategoriesFindAllRequestDto,
   CategoriesFindAllResponseDto,

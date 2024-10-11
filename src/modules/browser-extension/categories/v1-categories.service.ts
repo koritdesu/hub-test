@@ -2,7 +2,7 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import {
   CategoriesFindAllResponseDto,
   IV1CategoriesService,
-} from 'src/modules/categories/v1';
+} from '../../categories/v1';
 
 @Injectable()
 export class V1CategoriesService implements IV1CategoriesService {

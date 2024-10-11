@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { TransformToPositiveIntOrNull } from 'src/modules/common/serialization';
+import { TransformToPositiveIntOrNull } from '../../../serialization';
 import { CategoriesFindAllEntity } from '../entities';
 
 @Exclude()

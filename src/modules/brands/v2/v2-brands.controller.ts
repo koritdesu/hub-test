@@ -5,7 +5,7 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { RedisCacheInterceptor } from 'src/modules/common/cache/redis';
+import { RedisCacheInterceptor } from '../../common/cache/redis';
 import { BrandsFindAllResponseDto } from './dto';
 import { IV2BrandsService } from './v2-brands-service.interface';
 
