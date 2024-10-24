@@ -19,8 +19,8 @@ export abstract class CacheInterceptor implements NestInterceptor {
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Observable<any> | Promise<Observable<any>> {
+    next: CallHandler<unknown>,
+  ): Observable<unknown> | Promise<Observable<unknown>> {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
 
     return next.handle().pipe(

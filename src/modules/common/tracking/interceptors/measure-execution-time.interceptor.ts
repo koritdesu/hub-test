@@ -11,7 +11,7 @@ import { TrackingService } from '../tracking.service';
 export class MeasureExecutionTimeInterceptor implements NestInterceptor {
   constructor(private readonly trackingService: TrackingService) {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const time = this.trackingService.time(
       this.trackingService.label(context.getHandler()),
       context.getClass().name,

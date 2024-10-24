@@ -12,7 +12,14 @@ export class ReportBuilderModule {
   ): DynamicModule {
     return {
       module: ReportBuilderModule,
-      imports: [S3Module.register({} as any), ReportModule],
+      imports: [
+        S3Module.register({
+          accessKey: '',
+          endPoint: '',
+          secretKey: '',
+        }),
+        ReportModule,
+      ],
       providers: [
         {
           provide: REPORT_BUILDER_OPTIONS,

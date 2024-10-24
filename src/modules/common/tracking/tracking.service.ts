@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
