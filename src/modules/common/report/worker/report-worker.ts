@@ -19,7 +19,9 @@ const onMessage = (message: StreamWorkerData<ReportData>): void => {
   const wb = xlsx.utils.book_new();
 
   for (const { name, value, markup } of message.data.pages) {
-    const ws = xlsx.utils.aoa_to_sheet(value);
+    const ws = xlsx.utils.aoa_to_sheet(value, {
+      cellStyles: true,
+    });
 
     ws['!cols'] = markup.cols;
     ws['!rows'] = markup.rows;
