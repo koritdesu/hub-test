@@ -1,1 +1,3 @@
-export enum ReportType {}
+export enum ReportType {
+  Xlsx = 'xlsx',
+}

@@ -1,7 +1,7 @@
 {
   "name": "hub-test",
   "version": "0.0.1",
-   "type":"commonjs",
+  "type": "commonjs",
   "description": "",
   "author": "",
   "private": true,
@@ -35,7 +35,8 @@
     "minio": "8.0.1",
     "openai": "4.67.3",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1"
+    "rxjs": "7.8.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nestjs/cli": "10.4.5",

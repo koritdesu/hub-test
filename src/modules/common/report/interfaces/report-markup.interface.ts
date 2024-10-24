@@ -1,1 +1,6 @@
-export type ReportMarkup = unknown;
+import xlsx from 'xlsx';
+
+export interface ReportMarkup {
+  cols: xlsx.ColInfo[];
+  rows: xlsx.RowInfo[];
+}
