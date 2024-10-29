@@ -23,7 +23,7 @@ export abstract class ReportFactory<
   /**
    * Название файла выгрузки
    */
-  protected abstract name(params: TParams): string;
+  protected abstract name(params: TParams): Promise<string>;
 
   /**
    * Массив фабрик страниц выгрузки
@@ -34,12 +34,12 @@ export abstract class ReportFactory<
    * Создание выгрузки
    */
   async build(params: TParams): Promise<Report> {
-    const name = this.name(params);
     const key = this.cacheKey(params.cache?.key);
 
-    const cachedReport = await this.cache
-      .get(key)
-      .catch(this.logger.warn.bind(this.logger));
+    const [name, cachedReport] = await Promise.all([
+      this.name(params),
+      this.cache.get(key).catch(this.logger.warn.bind(this.logger)),
+    ]);
 
     if (cachedReport) {
       return {
