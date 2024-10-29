@@ -1,2 +1,2 @@
-export * from './stream-worker-data.interface';
+export * from './stream-worker-message.interface';
 export * from './worker-pool.interface';

@@ -1,15 +1,13 @@
 import { Logger, Type } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
 import { Cache } from '../cache/shared';
-import { PageFactory } from './abstract.page-factory';
-import { ReportType } from './enums';
-import { Report } from './interfaces';
+import { Report, ReportParams } from './interfaces';
+import { PageFactory } from './page.factory';
 import { ReportService } from './report.service';
 
 export abstract class ReportFactory<
-  TParams extends {
-    type: ReportType;
-  },
-  TData,
+  TParams extends ReportParams = ReportParams,
+  TData = unknown,
 > {
   constructor(
     protected readonly logger: Logger,
@@ -18,32 +16,39 @@ export abstract class ReportFactory<
   ) {}
 
   /**
-   * Получение данных для выгрузки.
-   * @param {TParams} params Параметры
+   * Получение данных выгрузки
    */
   protected abstract data(params: TParams): Promise<TData>;
 
   /**
-   * Название файла выгрузки.
-   * @param {TParams} params Параметры
+   * Название файла выгрузки
    */
   protected abstract name(params: TParams): string;
 
   /**
-   * Массив с реализацией страниц текущей выгрузки.
+   * Массив фабрик страниц выгрузки
    */
   protected abstract pages(): Type<PageFactory<TData>>[];
 
   /**
-   * Создание выгрузки или чтение ее из кэша.
-   * @param {TParams} params Параметры
-   * @returns {Report} Выгрузка
+   * Создание выгрузки
    */
   async build(params: TParams): Promise<Report> {
-    // TODO: кэширование и логирование
+    const name = this.name(params);
+    const key = this.cacheKey(params.cache?.key);
+
+    const cachedReport = await this.cache
+      .get(key)
+      .catch(this.logger.warn.bind(this.logger));
+
+    if (cachedReport) {
+      return {
+        data: cachedReport.stream(),
+        name,
+      };
+    }
 
     const data = await this.data(params);
-    const name = this.name(params);
     const pages = this.pages().map((pageFactory) => {
       return new pageFactory(this.logger).build(data);
     });
@@ -53,9 +58,15 @@ export abstract class ReportFactory<
       pages,
     });
 
+    this.cache.set(key, report).catch(this.logger.warn.bind(this.logger));
+
     return {
+      data: report,
       name,
-      buffer: report,
     };
+  }
+
+  private cacheKey(key: string = randomUUID()): string {
+    return key;
   }
 }

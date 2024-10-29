@@ -1,4 +1,6 @@
+import { Readable } from 'node:stream';
+
 export interface Report {
   name: string;
-  buffer: Buffer;
+  data: Buffer | Readable;
 }

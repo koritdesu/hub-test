@@ -1,6 +1,6 @@
 import { isMainThread, parentPort } from 'node:worker_threads';
 import xlsx from 'xlsx';
-import { StreamWorkerData } from '../../worker-pool';
+import { StreamWorkerMessage } from '../../worker-pool';
 import { ReportType } from '../enums';
 import { ReportMarkup, ReportValue } from '../interfaces';
 
@@ -15,18 +15,18 @@ export interface ReportData {
   pages: ReportPageData[];
 }
 
-const onMessage = (message: StreamWorkerData<ReportData>): void => {
-  const wb = xlsx.utils.book_new();
+const onMessage = (message: StreamWorkerMessage<ReportData>): void => {
+  const workBook = xlsx.utils.book_new();
 
   for (const { name, value, markup } of message.data.pages) {
-    const ws = xlsx.utils.aoa_to_sheet(value, {
+    const workSheet = xlsx.utils.aoa_to_sheet(value, {
       cellStyles: true,
     });
 
-    ws['!cols'] = markup.cols;
-    ws['!rows'] = markup.rows;
+    workSheet['!cols'] = markup.cols;
+    workSheet['!rows'] = markup.rows;
 
-    xlsx.utils.book_append_sheet(wb, ws, name);
+    xlsx.utils.book_append_sheet(workBook, workSheet, name);
   }
 
   const options: xlsx.WritingOptions = {
@@ -34,7 +34,7 @@ const onMessage = (message: StreamWorkerData<ReportData>): void => {
     bookType: message.data.type,
   };
 
-  message.producer.postMessage(xlsx.write(wb, options));
+  message.producer.postMessage(xlsx.write(workBook, options));
 };
 
 if (!isMainThread) {

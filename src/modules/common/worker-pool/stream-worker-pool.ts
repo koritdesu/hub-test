@@ -1,5 +1,5 @@
 import { MessageChannel } from 'node:worker_threads';
-import { StreamWorkerData } from './interfaces';
+import { StreamWorkerMessage } from './interfaces';
 import { WorkerPool } from './worker-pool';
 
 export class StreamWorkerPool<T> extends WorkerPool<T, Buffer> {
@@ -8,7 +8,7 @@ export class StreamWorkerPool<T> extends WorkerPool<T, Buffer> {
     const consumer = messageChannel.port1;
     const producer = messageChannel.port2;
 
-    const message: StreamWorkerData<T> = {
+    const message: StreamWorkerMessage<T> = {
       data,
       producer,
     };

@@ -6,6 +6,7 @@ import { AppConfigService } from './configs';
 import { BrowserExtensionModule } from './modules/browser-extension';
 import { CategoriesModule } from './modules/categories';
 import { CitiesModule } from './modules/cities';
+import { ReportModule } from './modules/common/report';
 import {
   MeasureExecutionTimeInterceptor,
   TrackingModule,
@@ -20,6 +21,7 @@ import {
       }),
     }),
     TrackingModule,
+    ReportModule.forRoot(),
     BrowserExtensionModule,
     CategoriesModule.register(),
     CitiesModule.register(),

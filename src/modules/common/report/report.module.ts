@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { DynamicModule, Type } from '@nestjs/common';
-import { ReportFactory } from './abstract.report-factory';
 import { ReportCoreModule } from './report-core.module';
+import { ReportFactory } from './report.factory';
 import { ReportService } from './report.service';
 
 export class ReportModule {
