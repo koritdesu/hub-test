@@ -1,6 +1,4 @@
 import { Logger, Type } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
-import { Cache } from '../cache/shared';
 import { Report, ReportParams } from './interfaces';
 import { PageFactory } from './page.factory';
 import { ReportService } from './report.service';
@@ -11,7 +9,6 @@ export abstract class ReportFactory<
 > {
   constructor(
     protected readonly logger: Logger,
-    protected readonly cache: Cache,
     private readonly reportService: ReportService,
   ) {}
 
@@ -34,21 +31,11 @@ export abstract class ReportFactory<
    * Создание выгрузки
    */
   async build(params: TParams): Promise<Report> {
-    const key = this.cacheKey(params.cache?.key);
-
-    const [name, cachedReport] = await Promise.all([
+    const [name, data] = await Promise.all([
       this.name(params),
-      this.cache.get(key).catch(this.logger.warn.bind(this.logger)),
+      this.data(params),
     ]);
 
-    if (cachedReport) {
-      return {
-        data: cachedReport.stream(),
-        name,
-      };
-    }
-
-    const data = await this.data(params);
     const pages = this.pages().map((pageFactory) => {
       return new pageFactory(this.logger).build(data);
     });
@@ -58,15 +45,9 @@ export abstract class ReportFactory<
       pages,
     });
 
-    this.cache.set(key, report).catch(this.logger.warn.bind(this.logger));
-
     return {
       data: report,
       name,
     };
-  }
-
-  private cacheKey(key: string = randomUUID()): string {
-    return key;
   }
 }
