@@ -1,1 +1,1 @@
-export * from './s3-options.interface';
+export * from './s3-config.interface';

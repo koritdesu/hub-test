@@ -1,12 +1,7 @@
-import { Readable } from 'node:stream';
+import { CacheResult } from './cache-result.interface';
 
-export interface Cache {
-  get<T = unknown>(
-    key: string,
-  ): Promise<{
-    stream(): Readable;
-    value(): T;
-  }>;
-  set<T = unknown>(key: string, value: T): Promise<T>;
-  has(key: string): Promise<boolean>;
+export abstract class Cache {
+  abstract get<T = unknown>(key: string): Promise<CacheResult<T>>;
+  abstract set<T = unknown>(key: string, value: T): Promise<T>;
+  abstract has(key: string): Promise<boolean>;
 }

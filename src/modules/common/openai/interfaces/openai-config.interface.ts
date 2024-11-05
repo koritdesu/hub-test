@@ -1,5 +1,7 @@
+import { OpenAI } from 'openai';
+
 export interface OpenAIConfig {
   apiKey: string;
-  model: string;
+  model: OpenAI.ChatModel;
   proxyUrl: string;
 }

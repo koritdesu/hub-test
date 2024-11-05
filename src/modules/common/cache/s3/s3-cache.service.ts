@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Injectable } from '@nestjs/common';
-import { Readable } from 'node:stream';
-import { Cache } from '../shared';
+import { Cache, CacheResult } from '../shared';
 
 @Injectable()
 export class S3CacheService implements Cache {
-  async get<T = unknown>(
-    key: string,
-  ): Promise<{
-    stream(): Readable;
-    value(): T;
-  }> {
+  async get<T = unknown>(key: string): Promise<CacheResult<T>> {
     throw new Error('Method not implemented.');
   }
 
