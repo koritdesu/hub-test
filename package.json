@@ -30,13 +30,14 @@
     "class-validator": "0.14.1",
     "fastify": "4.28.1",
     "https-proxy-agent": "7.0.5",
+    "ioredis": "5.4.1",
     "joi": "17.13.3",
     "lodash": "4.17.21",
     "minio": "8.0.1",
     "openai": "4.67.3",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
-    "xlsx": "^0.18.5"
+    "xlsx": "0.18.5"
   },
   "devDependencies": {
     "@nestjs/cli": "10.4.5",

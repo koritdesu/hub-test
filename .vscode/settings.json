@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["clickhouse", "fastify", "minio", "nestjs", "openai"]
+  "cSpell.words": [
+    "clickhouse",
+    "fastify",
+    "incrby",
+    "minio",
+    "nestjs",
+    "openai"
+  ]
 }
