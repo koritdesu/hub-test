@@ -6,10 +6,6 @@ import { CreateClickhouseDriverParams } from './interfaces';
 export function createClickhouseDriver(
   params: CreateClickhouseDriverParams,
 ): Driver {
-  const isDbException = (text: string) => text.includes('DB::Exception');
-  const isJsonResponse = (response: Response) =>
-    response.headers.get('content-type')?.startsWith('application/json');
-
   return {
     async query<T = unknown>(query: string): Promise<T> {
       const queryId = randomUUID();
@@ -36,6 +32,7 @@ export function createClickhouseDriver(
       if (response.ok) {
         if (isJsonResponse(response)) {
           const json = await response.json();
+
           return json.data;
         }
 
@@ -43,6 +40,7 @@ export function createClickhouseDriver(
       }
 
       const text = await response.text();
+
       if (isDbException(text)) {
         throw new DriverException(text);
       }
@@ -50,4 +48,12 @@ export function createClickhouseDriver(
       throw new DriverException('unknown');
     },
   };
+}
+
+function isDbException(text: string): boolean {
+  return text.includes('DB::Exception');
+}
+
+function isJsonResponse({ headers }: Response): boolean {
+  return headers.get('content-type')?.startsWith('application/json') ?? false;
 }

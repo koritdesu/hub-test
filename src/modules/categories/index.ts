@@ -1,2 +1,4 @@
-export * from './categories.module';
-export { IV1CategoriesService } from './v1';
+export * from './category.entity';
+export * from './category.module';
+export * from './category.repository';
+export * from './category.service';

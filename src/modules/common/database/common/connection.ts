@@ -1,5 +1,4 @@
 import { Logger } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
 import { TrackingService } from '../../tracking';
 import {
   ConnectionParams,
@@ -16,11 +15,11 @@ export class Connection {
     private readonly trackingService: TrackingService,
   ) {}
 
-  query<P>(fn: QueryDefinition<P>): QueryRunner<P> {
+  query<P>(queryDefinition: QueryDefinition<P>): QueryRunner<P> {
     return {
-      run: async <T>(params: ConnectionParams<P, T>) => {
-        const label = this.trackingService.label(fn);
-        const query = fn(params.params);
+      run: async <T>(params: ConnectionParams<P>): Promise<T> => {
+        const label = this.trackingService.label(queryDefinition);
+        const query = queryDefinition(params.params);
 
         this.logger.debug(`${label}\n`.concat(query));
 
@@ -28,10 +27,6 @@ export class Connection {
         const data = await this.driver
           .query<T>(query)
           .finally(() => time.end());
-
-        if (params?.mapper) {
-          return plainToInstance(params.mapper, data);
-        }
 
         return data;
       },

@@ -1,6 +1,3 @@
-import { ClassConstructor } from 'class-transformer';
-
-export interface ConnectionParams<P, T> {
+export interface ConnectionParams<P> {
   params: P;
-  mapper?: ClassConstructor<T>;
 }
