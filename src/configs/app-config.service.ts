@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import OpenAI from 'openai';
 import { OpenAIConfig } from '../modules/common/openai';
 import { S3Config } from '../modules/common/s3';
 import { AppConfig } from './types';
@@ -34,7 +35,7 @@ export class AppConfigService
 
   readonly openai: OpenAIConfig = {
     apiKey: this.configService.getOrThrow<string>('OPENAI_API_KEY'),
-    model: this.configService.getOrThrow<string>('OPENAI_MODEL'),
+    model: this.configService.getOrThrow<OpenAI.ChatModel>('OPENAI_MODEL'),
     proxyUrl: this.configService.getOrThrow<string>('OPENAI_PROXY_URL'),
   };
 
