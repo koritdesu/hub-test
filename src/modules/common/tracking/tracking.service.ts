@@ -3,7 +3,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { AlsService } from '../als';
-import { Tracker } from './interfaces';
+import { TimeTracker } from './interfaces';
 
 @Injectable()
 export class TrackingService {
@@ -15,7 +15,7 @@ export class TrackingService {
     return this.alsService.getStore()?.requestId ?? randomUUID();
   }
 
-  time(label: string, context = this.constructor.name): Tracker {
+  time(label: string, context = this.constructor.name): TimeTracker {
     const start = process.hrtime.bigint();
 
     return {

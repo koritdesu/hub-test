@@ -1,3 +1,3 @@
-export interface Tracker {
+export interface TimeTracker {
   end: () => void;
 }
