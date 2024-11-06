@@ -1,6 +1,7 @@
 import {
   CallHandler,
   ExecutionContext,
+  Injectable,
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
@@ -9,7 +10,10 @@ import { Observable, tap } from 'rxjs';
 import { TrackingService } from '../../tracking';
 import { Cache } from './interfaces';
 
-export abstract class CacheInterceptor implements NestInterceptor {
+@Injectable()
+export abstract class CacheInterceptor
+  implements NestInterceptor<unknown, unknown>
+{
   private readonly logger = new Logger(this.constructor.name);
 
   constructor(
