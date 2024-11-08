@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
-
 import { Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
+import type Redis from 'ioredis';
 
 @Injectable()
 export class RateLimitService {
@@ -9,23 +7,23 @@ export class RateLimitService {
 
   async isLimitExceeded(
     userId: string,
-    handler: Function,
+    url: string,
     limit: number,
   ): Promise<boolean> {
-    const value = await this.redis.get(this.key(userId, handler));
+    const value = Number(await this.redis.get(this.key(userId, url)));
 
-    if (value) {
-      return Number(value) >= limit;
+    if (Number.isNaN(value)) {
+      return false;
     }
 
-    return false;
+    return value >= limit;
   }
 
-  async increase(userId: string, handler: Function, value = 1): Promise<void> {
-    await this.redis.incrby(this.key(userId, handler), value);
+  async increase(userId: string, url: string, value = 1): Promise<void> {
+    await this.redis.incrby(this.key(userId, url), value);
   }
 
-  private key(userId: string, handler: Function): string {
-    return `users:${userId}:api:${handler.name}:rate-limit`;
+  private key(userId: string, url: string): string {
+    return `users:${userId}:api:${url.replace(/\\/g, '-')}:rate-limit`;
   }
 }

@@ -1,1 +1,1 @@
-export * from './tracker.interface';
+export * from './time-tracker.interface';

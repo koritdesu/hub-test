@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
-import { REPORT_WORKER_POOL } from './constants';
 import { IReportService, IReportWorkerPool } from './interfaces';
+import { REPORT_WORKER_POOL } from './report.constants';
 import { ReportData } from './worker';
 
 @Injectable()

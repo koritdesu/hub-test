@@ -25,7 +25,7 @@ export abstract class ReportFactory<
   /**
    * Массив фабрик страниц выгрузки
    */
-  protected abstract pages(): Type<PageFactory<TData>>[];
+  protected abstract pages(): Type<PageFactory<TData, TParams>>[];
 
   /**
    * Создание выгрузки
@@ -37,7 +37,7 @@ export abstract class ReportFactory<
     ]);
 
     const pages = this.pages().map((pageFactory) => {
-      return new pageFactory(this.logger).build(data);
+      return new pageFactory(this.logger).build(data, params);
     });
 
     const report = await this.reportService.build({

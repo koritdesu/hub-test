@@ -7,14 +7,14 @@ import { RateLimitService } from './rate-limit.service';
 export class RateLimitModule {
   static forRoot(config: RateLimitConfig): DynamicModule {
     return {
-      module: this,
+      module: RateLimitModule,
       imports: [RateLimitCoreModule.forRoot(config)],
     };
   }
 
   static forFeature(): DynamicModule {
     return {
-      module: this,
+      module: RateLimitModule,
       providers: [RateLimitService],
       exports: [RateLimitService],
     };

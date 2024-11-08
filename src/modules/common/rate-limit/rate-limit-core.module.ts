@@ -1,4 +1,4 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
+import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import Redis from 'ioredis';
 import { RateLimitConfig } from './interfaces';
 
@@ -6,13 +6,13 @@ import { RateLimitConfig } from './interfaces';
 @Module({})
 export class RateLimitCoreModule {
   static forRoot(config: RateLimitConfig): DynamicModule {
-    const redis = {
+    const redis: Provider<Redis> = {
       provide: Redis,
       useFactory: () => new Redis(config),
     };
 
     return {
-      module: this,
+      module: RateLimitCoreModule,
       providers: [redis],
       exports: [redis],
     };

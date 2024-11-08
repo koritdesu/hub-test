@@ -5,7 +5,7 @@ import { ReportPageData } from './worker';
 /**
  * Фабрика страницы выгрузки
  */
-export abstract class PageFactory<TData> {
+export abstract class PageFactory<TData, TParams> {
   constructor(protected readonly logger: Logger) {}
 
   /**
@@ -16,21 +16,21 @@ export abstract class PageFactory<TData> {
   /**
    * Название страницы выгрузки
    */
-  protected abstract name(): string;
+  protected abstract name(params: TParams): string;
 
   /**
    * Заполнение данными страницы выгрузки
    */
-  protected abstract value(data: TData): ReportValue[][];
+  protected abstract value(data: TData, params: TParams): ReportValue[][];
 
   /**
    * Создание страницы выгрузки
    */
-  build(data: TData): ReportPageData {
+  build(data: TData, params: TParams): ReportPageData {
     return {
       markup: this.markup(),
-      name: this.name(),
-      value: this.value(data),
+      name: this.name(params),
+      value: this.value(data, params),
     };
   }
 }

@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { DynamicModule, Type } from '@nestjs/common';
+import { DynamicModule, Module, Type } from '@nestjs/common';
 import { ReportCoreModule } from './report-core.module';
 import { ReportFactory } from './report.factory';
 import { ReportService } from './report.service';
 
+@Module({})
 export class ReportModule {
-  static forRoot(size?: number): DynamicModule {
+  static forRoot(threads?: number): DynamicModule {
     return {
       module: ReportModule,
-      imports: [ReportCoreModule.forRoot(size)],
+      imports: [ReportCoreModule.forRoot(threads)],
     };
   }
 
-  static forFeature(
-    module: Type,
-    reports: Type<ReportFactory<any, any>>[],
-  ): DynamicModule {
+  static forFeature(reports: Type<ReportFactory<any, any>>[]): DynamicModule {
     return {
-      module,
+      module: ReportModule,
       providers: [ReportService, ...reports],
       exports: reports,
     };
