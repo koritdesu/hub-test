@@ -5,9 +5,11 @@ import {
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { FastifyRequest } from 'fastify';
 import { from, Observable, tap } from 'rxjs';
 import { TrackingService } from '../../tracking';
+import { CacheOptions } from './cache-options.decorator';
 import { Cache } from './interfaces';
 
 @Injectable()
@@ -17,6 +19,7 @@ export abstract class CacheInterceptor
   private readonly logger = new Logger(this.constructor.name);
 
   constructor(
+    protected readonly reflector: Reflector,
     private readonly cache: Cache,
     private readonly trackingService: TrackingService,
   ) {}
@@ -26,6 +29,11 @@ export abstract class CacheInterceptor
     next: CallHandler<unknown>,
   ): Promise<Observable<unknown>> {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
+
+    // TODO: продумать как имлементировать разное поведение у стратегий
+    // пока требуется привязка кэша к юзеру и настройка expiry
+    const options = this.reflector.get(CacheOptions, context.getClass());
+    options.strategies.map((strategy) => strategy.execute(request));
 
     const key = this.key(request);
 
@@ -43,11 +51,15 @@ export abstract class CacheInterceptor
 
     return next.handle().pipe(
       tap((value) => {
-        this.cache.set(this.key(request), value).catch((error) => {
-          this.logger.warn(
-            this.trackingService.label(this.cache.set).concat('\n', error),
-          );
-        });
+        this.cache
+          .set(key, value, {
+            expiry: undefined,
+          })
+          .catch((error) => {
+            this.logger.warn(
+              this.trackingService.label(this.cache.set).concat('\n', error),
+            );
+          });
       }),
     );
   }
