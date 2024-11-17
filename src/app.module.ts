@@ -4,8 +4,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import Joi from 'joi';
 import { AppConfigService } from './configs';
 import { BrowserExtensionModule } from './modules/browser-extension';
-import { CategoriesModule } from './modules/categories';
-import { CitiesModule } from './modules/cities';
+import { CategoryModule } from './modules/categories';
+import { RedisCacheModule } from './modules/common/cache/redis';
+import { RateLimitModule } from './modules/common/rate-limit';
 import { ReportModule } from './modules/common/report';
 import {
   MeasureExecutionTimeInterceptor,
@@ -20,11 +21,12 @@ import {
         PORT: Joi.number().port().default(1234),
       }),
     }),
+    RedisCacheModule,
+    RateLimitModule.forRoot({}),
+    ReportModule.forRoot({}),
     TrackingModule,
-    ReportModule.forRoot(),
     BrowserExtensionModule,
-    CategoriesModule.register(),
-    CitiesModule.register(),
+    CategoryModule,
   ],
   providers: [
     {

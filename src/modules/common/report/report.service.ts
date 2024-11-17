@@ -1,13 +1,9 @@
-import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
-import { IReportService, IReportWorkerPool } from './interfaces';
-import { REPORT_WORKER_POOL } from './report.constants';
-import { ReportData } from './worker';
+import { Injectable, OnModuleDestroy } from '@nestjs/common';
+import { ReportData, ReportWorkerPool } from './worker';
 
 @Injectable()
-export class ReportService implements IReportService, OnModuleDestroy {
-  constructor(
-    @Inject(REPORT_WORKER_POOL) private readonly workerPool: IReportWorkerPool,
-  ) {}
+export class ReportService implements OnModuleDestroy {
+  constructor(private readonly workerPool: ReportWorkerPool) {}
 
   build(data: ReportData): Promise<Buffer> {
     return this.workerPool.process(data);

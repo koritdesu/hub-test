@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type Redis from 'ioredis';
+import { RATE_LIMIT } from './rate-limit.constants';
 
 @Injectable()
 export class RateLimitService {
-  constructor(private readonly redis: Redis) {}
+  constructor(@Inject(RATE_LIMIT) private readonly redis: Redis) {}
 
   async isLimitExceeded(
     userId: string,

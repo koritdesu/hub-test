@@ -6,11 +6,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { RedisCacheInterceptor } from '../common/cache/redis';
+import { RateLimitInterceptor } from '../common/rate-limit';
 import { CategoryService } from './category.service';
-import {
-  CategoriesFindAllRequestDto,
-  CategoriesFindAllResponseDto,
-} from './dto';
+import { CategoriesRequestDto, CategoryDto } from './dto';
 
 @Controller({
   path: ['categories'],
@@ -20,13 +18,11 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @UseInterceptors(RedisCacheInterceptor)
+  @UseInterceptors(RedisCacheInterceptor, RateLimitInterceptor)
   @SerializeOptions({
-    type: CategoriesFindAllResponseDto,
+    type: CategoryDto,
   })
-  findAll(
-    @Query() query: CategoriesFindAllRequestDto,
-  ): Promise<CategoriesFindAllResponseDto[]> {
+  findAll(@Query() query: CategoriesRequestDto): Promise<CategoryDto[]> {
     return this.categoryService.findAll(query);
   }
 }

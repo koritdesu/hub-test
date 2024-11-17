@@ -1,1 +1,1 @@
-export const OPENAI_CONFIG = '__openai_config__';
+export const OPENAI_CONFIG = '__openaiConfig__';

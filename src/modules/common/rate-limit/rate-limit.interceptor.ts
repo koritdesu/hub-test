@@ -31,7 +31,7 @@ export class RateLimitInterceptor implements NestInterceptor<unknown, unknown> {
 
     if (await this.rateLimitService.isLimitExceeded(userId, url, limit)) {
       this.logger.debug(
-        `User ${userId} has reached the limit (${limit}) for the ${request.url}`,
+        `User ${userId} has reached the limit (${limit}) for the ${url}`,
       );
 
       throw new HttpException('Too Many Requests', 429);

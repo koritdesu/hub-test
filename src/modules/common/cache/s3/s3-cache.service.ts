@@ -1,19 +1,34 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { Injectable } from '@nestjs/common';
+import { Client } from 'minio';
+import { json } from 'node:stream/consumers';
 import { Cache, CacheResult } from '../shared';
 
 @Injectable()
 export class S3CacheService implements Cache {
+  constructor(private readonly client: Client) {}
+
   async get<T = unknown>(key: string): Promise<CacheResult<T>> {
-    throw new Error('Method not implemented.');
+    const result = await this.client.getObject('cache', key);
+
+    return {
+      stream: () => result,
+      value: () => json(result) as Promise<T>,
+    };
   }
 
   async set<T = unknown>(key: string, value: T): Promise<T> {
-    throw new Error('Method not implemented.');
+    await this.client.putObject('cache', key, JSON.stringify(value));
+
+    return value;
   }
 
   async has(key: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    try {
+      await this.client.statObject('cache', key);
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

@@ -1,14 +1,15 @@
+import { Module } from '@nestjs/common';
 import { RedisCacheModule } from '../common/cache/redis';
 import {
   ClickhouseCategoryRepository,
   ClickhouseFastModule,
 } from '../common/database';
-import { createDynamicModule } from '../common/module';
+import { RateLimitModule } from '../common/rate-limit';
 import { CategoryController } from './category.controller';
 import { CategoryRepository } from './category.repository';
 import { CategoryService } from './category.service';
 
-export class CategoryModule extends createDynamicModule({
+@Module({
   imports: [
     ClickhouseFastModule.register([
       {
@@ -16,8 +17,10 @@ export class CategoryModule extends createDynamicModule({
         useClass: ClickhouseCategoryRepository,
       },
     ]),
-    RedisCacheModule,
+    RedisCacheModule.forFeature({}),
+    RateLimitModule.forFeature(),
   ],
   controllers: [CategoryController],
   providers: [CategoryService],
-}) {}
+})
+export class CategoryModule {}

@@ -1,9 +1,6 @@
 import { Worker } from 'node:worker_threads';
-import { IWorkerPool } from './interfaces';
 
-export abstract class WorkerPool<TData, TResult>
-  implements IWorkerPool<TData, TResult>
-{
+export abstract class WorkerPool<TData, TResult> {
   private readonly workers: Worker[] = [];
 
   private readonly pointer = this.roundRobin();

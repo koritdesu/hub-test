@@ -3,7 +3,7 @@ import { IsEnum, IsInt, Max, Min } from 'class-validator';
 import { ReportType } from '../../common/report';
 
 @Exclude()
-export class CategoriesFindAllRequestDto {
+export class CategoriesRequestDto {
   @Expose()
   @Type(() => Number)
   @IsInt()
@@ -19,14 +19,14 @@ export class CategoriesFindAllRequestDto {
 }
 
 @Exclude()
-export class CategoriesFindAllResponseDto {
-  @Expose()
-  id: string;
-}
-
-@Exclude()
-export class CategoriesReportRequestDto {
+export class CategoriesReportRequestDto extends CategoriesRequestDto {
   @Expose()
   @IsEnum(ReportType)
   type: ReportType;
+}
+
+@Exclude()
+export class CategoryDto {
+  @Expose()
+  id: string;
 }
