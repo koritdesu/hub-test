@@ -53,7 +53,7 @@ export abstract class CacheInterceptor
       tap((value) => {
         this.cache
           .set(key, value, {
-            expiry: undefined,
+            expiresIn: Date.now() + 86400000,
           })
           .catch((error) => {
             this.logger.warn(

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Client } from 'minio';
 import { json } from 'node:stream/consumers';
-import { Cache, CacheResult } from '../shared';
+import { Cache, CacheResult, SetOptions } from '../shared';
 
 @Injectable()
 export class S3CacheService implements Cache {
@@ -16,17 +16,29 @@ export class S3CacheService implements Cache {
     };
   }
 
-  async set<T = unknown>(key: string, value: T): Promise<T> {
-    await this.client.putObject('cache', key, JSON.stringify(value));
+  async set<T = unknown>(
+    key: string,
+    value: T,
+    options: SetOptions,
+  ): Promise<T> {
+    await this.client.putObject(
+      'cache',
+      key,
+      JSON.stringify(value),
+      undefined,
+      {
+        'Expires-In': options.expiresIn,
+      },
+    );
 
     return value;
   }
 
   async has(key: string): Promise<boolean> {
     try {
-      await this.client.statObject('cache', key);
+      const result = await this.client.statObject('cache', key);
 
-      return true;
+      return Number(result.metaData['Expires-In']) <= Date.now();
     } catch {
       return false;
     }

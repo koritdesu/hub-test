@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { Readable } from 'node:stream';
-import { Cache, CacheResult } from '../shared';
+import { Cache, CacheResult, SetOptions } from '../shared';
 
 @Injectable()
 export class RedisCacheService implements Cache {
@@ -16,8 +16,16 @@ export class RedisCacheService implements Cache {
     };
   }
 
-  async set<T = unknown>(key: string, value: T): Promise<T> {
-    await this.redis.set(key, JSON.stringify(value));
+  async set<T = unknown>(
+    key: string,
+    value: T,
+    options: SetOptions,
+  ): Promise<T> {
+    await this.redis.setex(
+      key,
+      Math.round((options.expiresIn - Date.now()) / 1000),
+      JSON.stringify(value),
+    );
 
     return value;
   }

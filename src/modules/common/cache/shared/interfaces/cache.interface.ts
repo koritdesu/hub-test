@@ -1,4 +1,5 @@
 import { CacheResult } from './cache-result.interface';
+import { SetOptions } from './set-options.interface';
 
 export abstract class Cache {
   abstract get<T = unknown>(key: string): Promise<CacheResult<T>>;
@@ -6,9 +7,7 @@ export abstract class Cache {
   abstract set<T = unknown>(
     key: string,
     value: T,
-    options: {
-      expiry?: number;
-    },
+    options: SetOptions,
   ): Promise<T>;
 
   abstract has(key: string): Promise<boolean>;
