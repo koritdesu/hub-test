@@ -26,7 +26,7 @@ export class RateLimitInterceptor implements NestInterceptor<unknown, unknown> {
     // достать limit из request.permissions / metadata
 
     const userId = '00000000-0000-0000-0000-000000000000';
-    const { url } = request;
+    const [url] = request.url.split('?');
     const limit = 100;
 
     if (await this.rateLimitService.isLimitExceeded(userId, url, limit)) {
