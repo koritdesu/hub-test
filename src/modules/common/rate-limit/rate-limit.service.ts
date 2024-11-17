@@ -21,7 +21,14 @@ export class RateLimitService {
   }
 
   async increase(userId: string, url: string, value = 1): Promise<void> {
-    await this.redis.incrby(this.key(userId, url), value);
+    const key = this.key(userId, url);
+    const date = new Date();
+
+    date.setDate(date.getDate() + 1);
+    date.setHours(0, 0, 0, 0);
+
+    await this.redis.incrby(key, value);
+    await this.redis.expireat(key, Math.round(date.getTime() / 1000));
   }
 
   private key(userId: string, url: string): string {
