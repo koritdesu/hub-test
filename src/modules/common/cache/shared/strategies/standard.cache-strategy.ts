@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { CacheStrategy, CacheStrategyResult } from '../interfaces';
 
 export class StandardCacheStrategy implements CacheStrategy {
-  execute(request: FastifyRequest): CacheStrategyResult {
+  execute(request: FastifyRequest): Partial<CacheStrategyResult> {
     const date = new Date();
 
     date.setDate(date.getDate() + 1);

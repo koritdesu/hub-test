@@ -7,7 +7,7 @@ export class UserCacheStrategy
   extends StandardCacheStrategy
   implements CacheStrategy
 {
-  execute(request: FastifyRequest): CacheStrategyResult {
+  execute(request: FastifyRequest): Partial<CacheStrategyResult> {
     // TODO: извлечь userId из request
     const result: Partial<CacheStrategyResult> = {
       key: ['00000000-0000-0000-0000-000000000000'],
