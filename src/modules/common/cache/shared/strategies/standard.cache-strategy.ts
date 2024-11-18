@@ -1,5 +1,5 @@
-import { createHash } from 'crypto';
 import { FastifyRequest } from 'fastify';
+import { createHash } from 'node:crypto';
 import { CacheStrategy, CacheStrategyResult } from '../interfaces';
 
 export class StandardCacheStrategy implements CacheStrategy {
