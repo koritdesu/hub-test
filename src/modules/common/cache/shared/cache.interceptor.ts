@@ -7,10 +7,11 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FastifyRequest } from 'fastify';
+import { mergeWith, MergeWithCustomizer } from 'lodash';
 import { from, Observable, tap } from 'rxjs';
 import { TrackingService } from '../../tracking';
 import { CacheOptions } from './cache-options.decorator';
-import { Cache } from './interfaces';
+import { Cache, CacheStrategyResult } from './interfaces';
 
 @Injectable()
 export abstract class CacheInterceptor
@@ -30,12 +31,20 @@ export abstract class CacheInterceptor
   ): Promise<Observable<unknown>> {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
 
-    // TODO: продумать как имлементировать разное поведение у стратегий
-    // пока требуется привязка кэша к юзеру и настройка expiry
-    const options = this.reflector.get(CacheOptions, context.getClass());
-    options.strategies.map((strategy) => strategy.execute(request));
+    const options = this.reflector.get(CacheOptions, context.getHandler());
+    const customizer: MergeWithCustomizer = (value, source) => {
+      if (Array.isArray(value)) {
+        return value.concat(source);
+      }
+    };
 
-    const key = this.key(request);
+    const result: CacheStrategyResult = mergeWith(
+      {},
+      ...options.strategies.map((strategy) => new strategy().execute(request)),
+      customizer,
+    );
+
+    const key = this.key(result);
 
     if (await this.cache.has(key)) {
       const cached = await this.cache.get(key).catch((error) => {
@@ -51,18 +60,14 @@ export abstract class CacheInterceptor
 
     return next.handle().pipe(
       tap((value) => {
-        this.cache
-          .set(key, value, {
-            expiresIn: Date.now() + 86400000,
-          })
-          .catch((error) => {
-            this.logger.warn(
-              this.trackingService.label(this.cache.set).concat('\n', error),
-            );
-          });
+        this.cache.set(key, value, result).catch((error) => {
+          this.logger.warn(
+            this.trackingService.label(this.cache.set).concat('\n', error),
+          );
+        });
       }),
     );
   }
 
-  protected abstract key(request: FastifyRequest): string;
+  protected abstract key(result: CacheStrategyResult): string;
 }

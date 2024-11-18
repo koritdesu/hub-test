@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { RedisCacheInterceptor } from '../common/cache/redis';
 import { CacheOptions } from '../common/cache/shared';
+import { UserCacheStrategy } from '../common/cache/shared/strategies';
 import { RateLimitInterceptor } from '../common/rate-limit';
 import { CategoryService } from './category.service';
 import { CategoriesRequestDto, CategoryDto } from './dto';
@@ -21,7 +22,7 @@ export class CategoryController {
   @Get()
   @UseInterceptors(RedisCacheInterceptor, RateLimitInterceptor)
   @CacheOptions({
-    strategies: [],
+    strategies: [UserCacheStrategy],
   })
   @SerializeOptions({
     type: CategoryDto,

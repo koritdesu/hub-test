@@ -23,7 +23,7 @@ export class RateLimitInterceptor implements NestInterceptor<unknown, unknown> {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
 
     // TODO: достать userId из request
-    // достать limit из request.permissions / metadata
+    // достать limit из request.permissions или metadata
 
     const userId = '00000000-0000-0000-0000-000000000000';
     const [url] = request.url.split('?');

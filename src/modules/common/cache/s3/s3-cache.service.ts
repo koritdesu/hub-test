@@ -27,7 +27,7 @@ export class S3CacheService implements Cache {
       JSON.stringify(value),
       undefined,
       {
-        'Expires-In': options.expiresIn,
+        'Expires-At': options.expiresAt,
       },
     );
 
@@ -38,7 +38,7 @@ export class S3CacheService implements Cache {
     try {
       const result = await this.client.statObject('cache', key);
 
-      return Number(result.metaData['Expires-In']) <= Date.now();
+      return Number(result.metaData['Expires-At']) <= Date.now();
     } catch {
       return false;
     }

@@ -32,6 +32,6 @@ export class RateLimitService {
   }
 
   private key(userId: string, url: string): string {
-    return `users:${userId}:api:${url.replace(/\\/g, '-')}:rate-limit`;
+    return url.split('/').slice(1).concat(userId).join(':');
   }
 }

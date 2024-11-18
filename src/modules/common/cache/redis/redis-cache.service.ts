@@ -23,7 +23,7 @@ export class RedisCacheService implements Cache {
   ): Promise<T> {
     await this.redis.setex(
       key,
-      Math.round((options.expiresIn - Date.now()) / 1000),
+      Math.round((options.expiresAt - Date.now()) / 1000),
       JSON.stringify(value),
     );
 

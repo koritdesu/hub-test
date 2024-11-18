@@ -1,3 +1,3 @@
 export interface SetOptions {
-  expiresIn: number;
+  expiresAt: number;
 }
