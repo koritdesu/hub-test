@@ -12,6 +12,7 @@ import { from, Observable, tap } from 'rxjs';
 import { TrackingService } from '../../tracking';
 import { CacheOptions } from './cache-options.decorator';
 import { Cache, CacheStrategyResult } from './interfaces';
+import { StandardCacheStrategy } from './strategies/standard.cache-strategy';
 
 @Injectable()
 export abstract class CacheInterceptor
@@ -30,8 +31,10 @@ export abstract class CacheInterceptor
     next: CallHandler<unknown>,
   ): Promise<Observable<unknown>> {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
+    const options = this.reflector.get(CacheOptions, context.getHandler()) ?? {
+      strategies: [StandardCacheStrategy],
+    };
 
-    const options = this.reflector.get(CacheOptions, context.getHandler());
     const customizer: MergeWithCustomizer = (value, source) => {
       if (Array.isArray(value)) {
         return value.concat(source);
