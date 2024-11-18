@@ -9,11 +9,12 @@ export class StandardCacheStrategy implements CacheStrategy {
     date.setDate(date.getDate() + 1);
     date.setHours(0, 0, 0, 0);
 
-    const [url, query] = request.url.slice(1).split('?');
+    const [url, query] = request.url.split('?');
 
     return {
       key: url
         .split('/')
+        .slice(1)
         .concat(createHash('SHA256').update(query).digest('hex')),
       expiresAt: date.getTime(),
     };
