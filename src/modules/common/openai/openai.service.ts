@@ -10,7 +10,9 @@ export class OpenAIService extends OpenAI {
   constructor(@Inject(OPENAI_CONFIG) private readonly config: OpenAIConfig) {
     super({
       apiKey: config.apiKey,
-      httpAgent: new HttpsProxyAgent(config.proxyUrl),
+      httpAgent: config.proxyUrl
+        ? new HttpsProxyAgent(config.proxyUrl)
+        : undefined,
     });
   }
 
