@@ -11,12 +11,12 @@ export abstract class PageFactory<TData, TParams> {
   /**
    * Разметка страницы выгрузки
    */
-  protected abstract markup(): ReportMarkup;
+  protected abstract markup(data: TData, params: TParams): ReportMarkup;
 
   /**
    * Название страницы выгрузки
    */
-  protected abstract name(params: TParams): string;
+  protected abstract name(data: TData, params: TParams): string;
 
   /**
    * Заполнение данными страницы выгрузки
@@ -28,8 +28,8 @@ export abstract class PageFactory<TData, TParams> {
    */
   build(data: TData, params: TParams): ReportPageData {
     return {
-      markup: this.markup(),
-      name: this.name(params),
+      markup: this.markup(data, params),
+      name: this.name(data, params),
       value: this.value(data, params),
     };
   }
