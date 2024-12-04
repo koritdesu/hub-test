@@ -16,6 +16,9 @@ export class S3CacheService implements Cache {
     };
   }
 
+  // TODO: на уровне метода добавить возможность передавать любой тип данных
+  // например стрим, буфер, объект
+  // все что не стрим и не буфер, должно сериализовываться через JSON.stringify
   async set<T = unknown>(
     key: string,
     value: T,

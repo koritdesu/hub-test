@@ -4,10 +4,13 @@ import {
   Injectable,
   Logger,
   NestInterceptor,
+  StreamableFile,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FastifyRequest } from 'fastify';
 import { mergeWith, MergeWithCustomizer } from 'lodash';
+import { PassThrough } from 'node:stream';
+import { buffer } from 'node:stream/consumers';
 import { from, Observable, tap } from 'rxjs';
 import { TrackingService } from '../../tracking';
 import { CacheOptions } from './cache-options.decorator';
@@ -62,7 +65,11 @@ export abstract class CacheInterceptor
     }
 
     return next.handle().pipe(
-      tap((value) => {
+      tap(async (value) => {
+        if (value instanceof StreamableFile) {
+          value = await buffer(value.getStream().pipe(new PassThrough()));
+        }
+
         this.cache.set(key, value, result).catch((error) => {
           this.logger.warn(
             this.trackingService.label(this.cache.set).concat('\n', error),
