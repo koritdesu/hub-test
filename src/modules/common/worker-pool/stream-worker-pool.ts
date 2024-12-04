@@ -2,8 +2,8 @@ import { MessageChannel } from 'node:worker_threads';
 import { StreamWorkerMessage } from './interfaces';
 import { WorkerPool } from './worker-pool';
 
-export class StreamWorkerPool<T> extends WorkerPool<T, Buffer> {
-  process(data: T): Promise<Buffer> {
+export class StreamWorkerPool<T> extends WorkerPool<T, ArrayBuffer> {
+  process(data: T): Promise<ArrayBuffer> {
     const messageChannel = new MessageChannel();
     const consumer = messageChannel.port1;
     const producer = messageChannel.port2;

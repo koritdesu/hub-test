@@ -5,7 +5,7 @@ import { ReportData, ReportWorkerPool } from './worker';
 export class ReportService implements OnModuleDestroy {
   constructor(private readonly workerPool: ReportWorkerPool) {}
 
-  build(data: ReportData): Promise<Buffer> {
+  build(data: ReportData): Promise<ArrayBuffer> {
     return this.workerPool.process(data);
   }
 
