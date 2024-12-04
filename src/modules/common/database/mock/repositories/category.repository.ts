@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { Category, CategoryRepository } from '../../../../categories';
 import { Connection } from '../../common';
 
