@@ -17,7 +17,7 @@ import { CategoryService } from './category.service';
         useClass: ClickhouseCategoryRepository,
       },
     ]),
-    RedisCacheModule.forFeature({}),
+    RedisCacheModule.forFeature(),
     RateLimitModule.forFeature(),
   ],
   controllers: [CategoryController],

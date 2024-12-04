@@ -7,7 +7,7 @@ import { RedisCacheService } from './redis-cache.service';
 
 @Module({})
 export class RedisCacheModule {
-  static forFeature(config: RedisCacheConfig): DynamicModule {
+  static forFeature(config: RedisCacheConfig = {}): DynamicModule {
     const redis = new Redis(config);
 
     return {
