@@ -4,7 +4,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import Joi from 'joi';
 import { AppConfigService } from './configs';
 import { BrowserExtensionModule } from './modules/browser-extension';
-import { CategoryModule } from './modules/categories';
+import { CategoriesModule } from './modules/categories';
 import { RedisCacheModule } from './modules/common/cache/redis';
 import { RateLimitModule } from './modules/common/rate-limit';
 import { ReportModule } from './modules/common/report';
@@ -26,7 +26,7 @@ import {
     ReportModule.forRoot({}),
     TrackingModule,
     BrowserExtensionModule,
-    CategoryModule,
+    CategoriesModule,
   ],
   providers: [
     {

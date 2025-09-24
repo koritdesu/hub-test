@@ -1,6 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEnum, IsInt, Max, Min } from 'class-validator';
-import { ReportType } from '../../common/report';
+import { ReportType } from '../../../common/report';
 
 @Exclude()
 export class CategoriesRequestDto {
@@ -26,7 +26,7 @@ export class CategoriesReportRequestDto extends CategoriesRequestDto {
 }
 
 @Exclude()
-export class CategoryDto {
+export class CategoryResponseDto {
   @Expose()
   id: string;
 }

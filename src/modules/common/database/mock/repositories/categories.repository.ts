@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import { Category, CategoryRepository } from '../../../../categories';
+import {
+  CategoryEntity,
+  CategoriesRepository,
+} from '../../../../categories/v1';
 import { Connection } from '../../common';
 
 @Injectable()
-export class MockCategoryRepository implements CategoryRepository {
+export class MockCategoriesRepository implements CategoriesRepository {
   constructor(protected readonly connection: Connection) {}
 
-  findAll(_skip: number, take: number): Promise<Category[]> {
+  categories(_skip: number, take: number): Promise<CategoryEntity[]> {
     return Promise.resolve(
       Array.from(
         {

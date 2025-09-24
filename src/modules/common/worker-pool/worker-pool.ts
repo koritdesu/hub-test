@@ -35,7 +35,7 @@ export abstract class WorkerPool<TData, TResult> {
 
   private *roundRobin(): Generator<number, never> {
     let pointer = 0;
-    for (; true; ) {
+    while (true) {
       if (pointer === this.size) {
         pointer = 0;
       }

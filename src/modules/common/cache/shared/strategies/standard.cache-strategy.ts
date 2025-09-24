@@ -9,7 +9,7 @@ export class StandardCacheStrategy implements CacheStrategy {
     date.setDate(date.getDate() + 1);
     date.setHours(0, 0, 0, 0);
 
-    const [url, query] = request.url.split('?');
+    const [url, query = ''] = request.url.split('?');
 
     return {
       key: url

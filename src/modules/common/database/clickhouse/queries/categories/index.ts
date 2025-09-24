@@ -1,1 +1,1 @@
-export * from './categories-find-all.query';
+export * from './categories.query';

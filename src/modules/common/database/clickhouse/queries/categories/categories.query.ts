@@ -1,6 +1,6 @@
 import { QueryDefinition } from '../../../common';
 
-export const categoriesFindAllQuery: QueryDefinition<{
+export const categoriesQuery: QueryDefinition<{
   skip: number;
   take: number;
 }> = (params) => {
