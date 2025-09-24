@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { DynamicModule, Logger, Module, Type } from '@nestjs/common';
-import { DiscoveryModule } from '@nestjs/core';
 import { ReportConfig } from './interfaces';
 import { ReportCoreModule } from './report-core.module';
 import { ReportFactory } from './report.factory';
@@ -22,7 +21,6 @@ export class ReportModule {
   ): DynamicModule {
     return {
       module: ReportModule,
-      imports: [DiscoveryModule],
       providers: [
         ReportService,
         {

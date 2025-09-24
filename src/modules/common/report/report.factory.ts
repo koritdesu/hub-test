@@ -1,4 +1,4 @@
-import { Logger, Type } from '@nestjs/common';
+import { Inject, Logger, Type } from '@nestjs/common';
 import { Report, ReportParams } from './interfaces';
 import { PageFactory } from './page.factory';
 import { ReportService } from './report.service';
@@ -9,7 +9,7 @@ export abstract class ReportFactory<
 > {
   constructor(
     protected readonly logger: Logger,
-    private readonly reportService: ReportService,
+    @Inject(ReportService) private readonly reportService: ReportService,
   ) {}
 
   /**

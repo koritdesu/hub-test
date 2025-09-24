@@ -1,4 +1,4 @@
-import { Type } from '@nestjs/common';
+import { Injectable, Type } from '@nestjs/common';
 import {
   PageFactory,
   ReportFactory,
@@ -14,6 +14,7 @@ interface CategoriesReportParams
 interface CategoriesReportData
   extends Awaited<ReturnType<CategoriesService['categories']>> {}
 
+@Injectable()
 export class CategoriesReport extends ReportFactory<
   CategoriesReportParams,
   CategoriesReportData
